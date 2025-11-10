@@ -9,6 +9,11 @@ jobs:
       latest: ${{ steps.set-matrix.outputs.requireds }}
       minors: ${{ steps.set-matrix.outputs.optionals }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
       - uses: ljharb/actions/node/matrix@main
         id: set-matrix
         with:
@@ -24,6 +29,11 @@ jobs:
       matrix: ${{ fromJson(needs.matrix.outputs.latest) }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v2
       - uses: ljharb/actions/node/install@main
         name: 'nvm install ${{ matrix.node-version }} && npm install'
@@ -44,6 +54,11 @@ jobs:
       matrix: ${{ fromJson(needs.matrix.outputs.minors) }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v2
       - uses: ljharb/actions/node/install@main
         name: 'nvm install ${{ matrix.node-version }} && npm install'
@@ -57,4 +72,9 @@ jobs:
     needs: [latest, minors]
     runs-on: ubuntu-latest
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
       - run: 'echo tests completed'
